@@ -1,9 +1,12 @@
+#!/usr/bin/python 
+
+# -*- coding: utf-8 -*-
 """
 获取所有的歌手信息
 """
 import requests
 from bs4 import BeautifulSoup
-from music_163 import sql
+import sql
 
 headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -30,8 +33,9 @@ def save_artist(group_id, initial):
     body = soup.body
 
     hot_artists = body.find_all('a', attrs={'class': 'msk'})
-    artists = body.find_all('a', attrs={'class': 'nm nm-icn f-thide s-fc0'})
-
+    artists = body.find_all('a', attrs={'class': 'nm nm-icn f-thide s-fc0'})#从网络或磁盘上读取了字节流，那么读到的数据就是bytes。要把bytes变为str，就需要用decode()方法
+    print('找到歌手');
+    print(hot_artists);
     for artist in hot_artists:
         artist_id = artist['href'].replace('/artist?id=', '').strip()
         artist_name = artist['title'].replace('的音乐', '')
@@ -52,6 +56,11 @@ def save_artist(group_id, initial):
 
 
 gg = 4003
+import sys
+import importlib
+importlib.reload(sys)
+
+#sys.setdefaultencoding('utf8')
 
 save_artist(gg, 0)
 for i in range(65, 91):

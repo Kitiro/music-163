@@ -5,11 +5,24 @@ import pymysql.cursors
 
 connection = pymysql.connect(host='localhost',
                              user='root',
-                             password='1234',
-                             db='test',
+                             password='123456',
+                             db='wyy',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
+def create_tabels():
+    tabels = ['artists', 'albums', 'comments', 'musics']
+    tabels_info = ['ARTIST_ID varchar(10) primary key, ARTIST_NAME varchar(10)',
+            'ALBUM_ID varchar(15) primary key, ARTIST_ID varchar(10)',
+            'MUSIC_ID varchar(20), COMMENTS varchar(100), DETAILS varchar(100)',
+            'MUSIC_ID varchar(20), MUSIC_NAME varchar(20), ALBUM_ID varchar(15)']
+    with connection.cursor() as cursor:
+        sql = "CREATE TABLE  {} ({});"
+        for i,j in zip(tabels, tabels_info):
+            exe = sql.format(i,j)
+            print(exe)
+            cursor.execute(exe)
+    connection.commit()
 
 # 保存评论
 def insert_comments(music_id, comments, detail, connection0):
@@ -85,3 +98,6 @@ def get_after_music():
 
 def dis_connect():
     connection.close()
+
+if __name__ == "__main__":
+    create_tabels()
